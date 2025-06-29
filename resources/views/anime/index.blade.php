@@ -63,56 +63,34 @@
                 </div>
             @else
                 <!-- Anime Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    @foreach ($animeData as $anime)
-                        <div class="card group">
-                            <a href="{{ route('anime.detail',['id'=>$anime['mal_id']]) }}" class="block">
-                                <div class="relative overflow-hidden">
-                                    <!-- Image -->
-                                    <img src="{{ $anime['images']['jpg']['image_url'] }}"
-                                         alt="{{ $anime['title'] }}"
-                                         class="w-full h-72 object-cover transform group-hover:scale-105 transition-transform duration-300">
-
-                                    <!-- Overlay -->
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        <div class="absolute bottom-0 left-0 right-0 p-4">
-                                            <p class="text-white text-sm">{{ $anime['type'] }} • {{ $anime['episodes'] }} eps</p>
-                                            <div class="flex items-center mt-2">
-                                                <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                                </svg>
-                                                <span class="ml-1 text-white">{{ $anime['score'] }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Content -->
-                                <div class="p-4">
-                                    <h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-200">
-                                        {{ $anime['title'] }}
-                                    </h3>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
+                <!-- Top Anime -->
+                <div class="mt-4">
+                    <h2 class="text-2xl font-bold mb-4 text-white">Top Anime</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        @foreach ($topAnime as $anime)
+                            <x-anime-card :anime="$anime"/>
+                        @endforeach
+                    </div>
                 </div>
 
-                <!-- Pagination -->
-                <div class="mt-12 flex justify-center gap-4">
-                    @if ($pagination['current_page'] > 1)
-                        <a href="{{ route('anime.index', ['page' => $pagination['current_page'] - 1, 'search' => $search]) }}"
-                           class="btn-secondary">
-                            Previous
-                        </a>
-                    @endif
+                <!-- Recomended Anime -->
+                <div class="mt-4">
+                    <h2 class="text-2xl font-bold mb-4 text-white">Recomended Anime</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        @foreach ($recommendedAnime as $anime)
+                            <x-anime-card :anime="$anime" />
+                        @endforeach
+                    </div>
+                </div>
 
-                    @if ($pagination['has_next_page'])
-                        <a href="{{ route('anime.index', ['page' => $pagination['current_page'] + 1, 'search' => $search]) }}"
-                           class="btn-primary">
-                            Next
-                        </a>
-                    @endif
+                <!-- Random Anime -->
+                <div class="mt-4">
+                    <h2 class="text-2xl font-bold mb-4 text-white">Random Anime</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        @foreach ($randomAnime as $anime)
+                            <x-anime-card :anime="$anime"/>
+                        @endforeach
+                    </div>
                 </div>
             @endif
         </div>
@@ -137,7 +115,6 @@
                 localStorage.setItem('theme', 'light');
             }
         } else {
-            // Apply saved theme
             if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
             } else {

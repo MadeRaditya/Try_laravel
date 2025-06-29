@@ -87,12 +87,12 @@
                                         <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
                                         <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
                                     </svg>
-                                    Halo Feature
+                                    Profil
                                 </dt>
                                 <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600 dark:text-gray-300">
-                                    <p class="flex-auto">Discover more about our Halo feature and what it offers.</p>
+                                    <p class="flex-auto">Discover more about our </p>
                                     <p class="mt-6">
-                                        <a href="{{ route('halo') }}" class="text-sm font-semibold leading-6 text-red-600">Learn more <span aria-hidden="true">→</span></a>
+                                        <a href="{{ route('profil') }}" class="text-sm font-semibold leading-6 text-red-600">Learn more <span aria-hidden="true">→</span></a>
                                     </p>
                                 </dd>
                             </div>

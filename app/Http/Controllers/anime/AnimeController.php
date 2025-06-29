@@ -10,48 +10,94 @@ use function Laravel\Prompts\search;
 
 class AnimeController extends Controller
 {
-public function index(Request $request)
-{
-    $search =$request->query('search','');
+    public function index()
+    {
+        $topAnime = Http::get(env("JIKAN_API") . "/top/anime?limit=8")->json(
+            "data"
+        );
+        $recommendationResponse = Http::get(
+            env("JIKAN_API") . "/recommendations/anime"
+        );
 
-    $apiQuery = $search ?['q'=>$search]:[];
+        $recommendedAnime = [];
 
-    $page = $request->query('page',1);
-    $apiUrl = env('JIKAN_API'); 
+        if ($recommendationResponse->successful()) {
+            $recommendationData = $recommendationResponse->json("data");
 
-    $response = Http::get($apiUrl . 'anime',array_merge($apiQuery,[
-        'page'=>$page
-    ])); 
+            foreach ($recommendationData as $item) {
+                foreach ($item["entry"] as $anime) {
+                    $recommendedAnime[$anime["mal_id"]] = $anime;
+                }
+            }
 
-    
-    if ($response->successful()) {
-        $data = $response->json();
-        
-        
-        $animeData = $data['data'];
-        $pagination = $data['pagination'];
+            $recommendedAnime = array_slice(
+                array_values($recommendedAnime),
+                0,
+                8
+            );
+        }
 
-        return view('anime.index', compact('animeData','pagination','search'));
-    } else {
-        
-        return view('anime.index', ['error' => 'Error fetching data']);
+        $recommendedAnime = array_slice(array_values($recommendedAnime), 0, 8);
+        $randomAnime = [];
+        for ($i = 0; $i < 8; $i++) {
+            $random = Http::get(env("JIKAN_API") . "/random/anime");
+            if ($random->successful()) {
+                $randomAnime[] = $random->json("data");
+            }
+        }
+
+        return view(
+            "anime.index",
+            compact("topAnime", "recommendedAnime", "randomAnime")
+        );
     }
-}
-public function show($id)
+
+    // public function index(Request $request)
+    // {
+    //     $search = $request->query("search", "");
+
+    //     $apiQuery = $search ? ["q" => $search] : [];
+
+    //     $page = $request->query("page", 1);
+    //     $apiUrl = env("JIKAN_API");
+
+    //     $response = Http::get(
+    //         $apiUrl . "/anime",
+    //         array_merge($apiQuery, [
+    //             "page" => $page,
+    //         ])
+    //     );
+
+    //     if ($response->successful()) {
+    //         $data = $response->json();
+
+    //         $animeData = $data["data"];
+    //         $pagination = $data["pagination"];
+
+    //         return view(
+    //             "anime.index",
+    //             compact("animeData", "pagination", "search")
+    //         );
+    //     } else {
+    //         return view("anime.index", ["error" => "Error fetching data"]);
+    //     }
+    // }
+    public function show($id)
     {
         //
         $apiUrl = env("JIKAN_API");
 
-        $response = Http::get($apiUrl.'anime/'.$id ."/full");
+        $response = Http::get($apiUrl . "/anime/" . $id . "/full");
 
-        if($response->successful()){
+        if ($response->successful()) {
             $result = $response->json();
-            $data = $result['data'];
-            return view('anime.detailAnime', compact('data'));
-        }else{
-            return view('anime.detailAnime',['error'=>'Error featching anime Detail']);
+            $data = $result["data"];
+            return view("anime.detailAnime", compact("data"));
+        } else {
+            return view("anime.detailAnime", [
+                "error" => "Error featching anime Detail",
+            ]);
         }
-
     }
     /**
      * Show the form for creating a new resource.
@@ -72,7 +118,6 @@ public function show($id)
     /**
      * Display the specified resource.
      */
-    
 
     /**
      * Show the form for editing the specified resource.
