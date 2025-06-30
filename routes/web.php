@@ -23,6 +23,10 @@ Route::delete("/todo/{id}", [TodoController::class, "destroy"])->name(
     "todo.delete"
 );
 Route::get("/anime", [AnimeController::class, "index"])->name("anime.index");
-Route::get("/anime/{id}", [AnimeController::class, "show"])->name(
+Route::get("/anime/TopAnime", [AnimeController::class, "topAnime"])->name(
+    "anime.topAnime"
+);
+Route::get("/anime/detail/{id}", [AnimeController::class, "show"])->name(
     "anime.detail"
 );
+

@@ -5,14 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Anime List</title>
+    <title>Top Anime</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="antialiased min-h-screen bg-dots-darker bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900">
-    <!-- Navbar -->
     <x-navbar />
 
     <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
@@ -26,10 +25,12 @@
             <!-- Header Section -->
             <div class="text-center mb-12">
                 <h1 class="text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl">
-                    Anime Collection
+                    Top Anime
                 </h1>
                 <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
-                    Discover your next favorite anime series
+                    Discover the most popular anime series and movies, <br/>
+                    and be updated regularly to keep you in the loop with
+                    the latest trends in the anime world.
                 </p>
             </div>
 
@@ -71,35 +72,9 @@
             </div>
             @else
             <!-- Anime Grid -->
-            <!-- Top Anime -->
             <div class="mt-4">
-                <div class="dark:text-white mb-4 flex items-center justify-between">
-                    <h2 class="text-2xl font-bold">Top Anime</h2>
-                    <a href="{{ route('anime.topAnime') }}" class="text-sm font-semibold underline hover:text-red-600 dark:hover:text-red-700 transition-all duration-300">See more<span aria-hidden="true" class=" text-2xl font-bold">→</span>
-                    </a>
-                </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach ($topAnime as $anime)
-                    <x-anime-card :anime="$anime" />
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Recomended Anime -->
-            <div class="mt-4">
-                <h2 class="text-2xl font-bold mb-4 dark:text-white">Recomended Anime</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    @foreach ($recommendedAnime as $anime)
-                    <x-anime-card :anime="$anime" />
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Random Anime -->
-            <div class="mt-4">
-                <h2 class="text-2xl font-bold mb-4 dark:text-white">Random Anime</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    @foreach ($randomAnime as $anime)
                     <x-anime-card :anime="$anime" />
                     @endforeach
                 </div>
@@ -107,6 +82,8 @@
             @endif
         </div>
     </div>
+
+    <x-pagination :pagination="$pagination" :currentPage="$page" route="anime.topAnime" />
     <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         aria-hidden="true">
         <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
@@ -116,7 +93,6 @@
 
 
     <x-footer />
-
     <script>
         document.querySelector('.mobile-menu-button').addEventListener('click', function() {
                 document.querySelector('#mobile-menu').classList.toggle('hidden');
@@ -176,5 +152,4 @@
             });
     </script>
 </body>
-
 </html>

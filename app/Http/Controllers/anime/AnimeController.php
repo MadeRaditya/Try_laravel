@@ -99,47 +99,24 @@ class AnimeController extends Controller
             ]);
         }
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    
+    public function topAnime(Request $request)
+{
+    $page = $request->query("page", 1);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    $response = Http::get(env("JIKAN_API") . "/top/anime", [
+        'page' => $page,
+    ]);
 
-    /**
-     * Display the specified resource.
-     */
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    if ($response->successful()) {
+        $result = $response->json();
+        $topAnime = $result['data'];
+        $pagination = $result['pagination'];
+        return view("anime.topAnime", compact("topAnime", "pagination", "page"));
+    } else {
+        return view("anime.topAnime", [
+            "error" => "Error fetching top anime data",
+        ]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+}
 }
