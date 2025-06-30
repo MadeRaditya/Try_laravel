@@ -11,6 +11,8 @@
     if ($end - $start < 4) {
         $start = max(1, $end - 4);
     }
+
+    $query = request()->except('page');
 @endphp
 
 <nav class="pagination my-6">
@@ -18,7 +20,7 @@
         {{-- First --}}
         @if ($current > 1)
             <li>
-                <a href="{{ route($route, ['page' => 1]) }}"
+                <a href="{{ route($route, array_merge($query, ['page' => 1]))  }}"
                    class="px-3 py-1.5 text-sm font-medium border rounded-md 
                           bg-white text-gray-600 hover:bg-red-500 hover:text-white 
                           dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-red-700">
@@ -30,7 +32,7 @@
         {{-- Previous --}}
         @if ($current > 1)
             <li>
-                <a href="{{ route($route, ['page' => $current - 1]) }}"
+                <a href="{{ route($route, array_merge($query, ['page' => $current - 1])) }}"
                    class="px-3 py-1.5 text-sm font-medium border rounded-md 
                           bg-white text-gray-600 hover:bg-red-500 hover:text-white 
                           dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-red-700">
@@ -42,7 +44,7 @@
         {{-- Page Numbers --}}
         @for ($i = $start; $i <= $end; $i++)
             <li>
-                <a href="{{ route($route, ['page' => $i]) }}"
+                <a href="{{ route($route, array_merge($query, ['page' => $i])) }}"
                    class="px-3 py-1.5 text-sm font-medium border rounded-md 
                           {{ $i == $current 
                                 ? 'bg-red-600 text-white dark:bg-red-700' 
@@ -55,7 +57,7 @@
         {{-- Next --}}
         @if ($hasNext)
             <li>
-                <a href="{{ route($route, ['page' => $current + 1]) }}"
+                <a href="{{ route($route, array_merge($query, ['page' => $current + 1])) }}"
                    class="px-3 py-1.5 text-sm font-medium border rounded-md 
                           bg-white text-gray-600 hover:bg-red-500 hover:text-white 
                           dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-red-700">
@@ -67,7 +69,7 @@
         {{-- Last --}}
         @if ($hasNext)
             <li>
-                <a href="{{ route($route, ['page' => $lastPage]) }}"
+                <a href="{{ route($route, array_merge($query, ['page' => $lastPage])) }}"
                    class="px-3 py-1.5 text-sm font-medium border rounded-md 
                           bg-white text-gray-600 hover:bg-red-500 hover:text-white 
                           dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-red-700">

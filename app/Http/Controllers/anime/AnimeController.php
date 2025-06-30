@@ -52,36 +52,6 @@ class AnimeController extends Controller
         );
     }
 
-    // public function index(Request $request)
-    // {
-    //     $search = $request->query("search", "");
-
-    //     $apiQuery = $search ? ["q" => $search] : [];
-
-    //     $page = $request->query("page", 1);
-    //     $apiUrl = env("JIKAN_API");
-
-    //     $response = Http::get(
-    //         $apiUrl . "/anime",
-    //         array_merge($apiQuery, [
-    //             "page" => $page,
-    //         ])
-    //     );
-
-    //     if ($response->successful()) {
-    //         $data = $response->json();
-
-    //         $animeData = $data["data"];
-    //         $pagination = $data["pagination"];
-
-    //         return view(
-    //             "anime.index",
-    //             compact("animeData", "pagination", "search")
-    //         );
-    //     } else {
-    //         return view("anime.index", ["error" => "Error fetching data"]);
-    //     }
-    // }
     public function show($id)
     {
         //
@@ -99,24 +69,57 @@ class AnimeController extends Controller
             ]);
         }
     }
-    
+
     public function topAnime(Request $request)
-{
-    $page = $request->query("page", 1);
+    {
+        $page = $request->query("page", 1);
 
-    $response = Http::get(env("JIKAN_API") . "/top/anime", [
-        'page' => $page,
-    ]);
-
-    if ($response->successful()) {
-        $result = $response->json();
-        $topAnime = $result['data'];
-        $pagination = $result['pagination'];
-        return view("anime.topAnime", compact("topAnime", "pagination", "page"));
-    } else {
-        return view("anime.topAnime", [
-            "error" => "Error fetching top anime data",
+        $response = Http::get(env("JIKAN_API") . "/top/anime", [
+            'page' => $page,
         ]);
+
+        if ($response->successful()) {
+            $result = $response->json();
+            $topAnime = $result['data'];
+            $pagination = $result['pagination'];
+            return view("anime.topAnime", compact("topAnime", "pagination", "page"));
+        } else {
+            return view("anime.topAnime", [
+                "error" => "Error fetching top anime data",
+            ]);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->query("search", "");
+
+        $apiQuery = $search ? ["q" => $search] : [];
+
+        $page = $request->query("page", 1);
+        $apiUrl = env("JIKAN_API");
+
+        $response = Http::get(
+            $apiUrl . "/anime",
+            array_merge($apiQuery, [
+                "page" => $page,
+            ])
+        );
+
+        if ($response->successful()) {
+            $data = $response->json();
+
+            $animeData = $data["data"];
+            $pagination = $data["pagination"];
+
+            return view(
+                "anime.searchAnime",
+                compact("animeData", "pagination", "search", "page")
+            );
+        } else {
+            return view("anime.searchAnime", ["error" => "Error fetching data"]);
+        }
     }
 }
-}
+
+

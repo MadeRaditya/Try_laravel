@@ -36,23 +36,8 @@
 
             <!-- Search Form -->
             <div class="max-w-2xl mx-auto mb-12">
-                <form method="GET" action="{{ route('anime.index') }}" class="flex gap-4">
-                    <input type="text" name="search" placeholder="Search for anime..."
-                        value="{{ request()->query('search') }}" class="input flex-1 px-4 py-3 text-base">
-                    <button type="submit" class="btn-primary">
-                        Search
-                    </button>
-                </form>
+                <x-search-form />
             </div>
-
-            <!-- Search Results -->
-            @if(isset($search) && $search)
-            <div class="text-center mb-8">
-                <p class="text-lg text-gray-600 dark:text-gray-400">
-                    Search results for: <span class="font-semibold text-red-600 dark:text-red-400">{{ $search }}</span>
-                </p>
-            </div>
-            @endif
 
             <!-- Error Message -->
             @if (isset($error))
