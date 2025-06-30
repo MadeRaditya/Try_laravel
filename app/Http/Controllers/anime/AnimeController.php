@@ -6,49 +6,39 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-use function Laravel\Prompts\search;
 
 class AnimeController extends Controller
 {
     public function index()
     {
-        $topAnime = Http::get(env("JIKAN_API") . "/top/anime?limit=8")->json(
-            "data"
-        );
-        $recommendationResponse = Http::get(
-            env("JIKAN_API") . "/recommendations/anime"
-        );
+        $randomPage = rand(1, 20);
+
+        [$topAnimeResponse, $recommendedResponse] = Http::pool(fn($pool) => [
+            $pool->get(env("JIKAN_API") . "/top/anime?limit=8"),
+            $pool->get(env("JIKAN_API") . "/recommendations/anime?page={$randomPage}"),
+        ]);
+
+        $topAnime = $topAnimeResponse->successful() ? $topAnimeResponse->json()['data'] : [];
 
         $recommendedAnime = [];
 
-        if ($recommendationResponse->successful()) {
-            $recommendationData = $recommendationResponse->json("data");
+        if ($recommendedResponse->successful()) {
+            $rawRecommended = $recommendedResponse->json()['data']??[];
+            
+            $allEntries = collect($rawRecommended)
+            ->flatMap(fn($item) => $item['entry'])
+            ->unique('mal_id')
+            ->values();
 
-            foreach ($recommendationData as $item) {
-                foreach ($item["entry"] as $anime) {
-                    $recommendedAnime[$anime["mal_id"]] = $anime;
-                }
-            }
-
-            $recommendedAnime = array_slice(
-                array_values($recommendedAnime),
-                0,
-                8
-            );
+            $recommendedAnime = $allEntries->count()<= 8
+            ? $allEntries->all()
+            : $allEntries->slice(rand(0, $allEntries->count() - 8), 8)->all();
         }
 
-        $recommendedAnime = array_slice(array_values($recommendedAnime), 0, 8);
-        $randomAnime = [];
-        for ($i = 0; $i < 8; $i++) {
-            $random = Http::get(env("JIKAN_API") . "/random/anime");
-            if ($random->successful()) {
-                $randomAnime[] = $random->json("data");
-            }
-        }
 
         return view(
             "anime.index",
-            compact("topAnime", "recommendedAnime", "randomAnime")
+            compact("topAnime", "recommendedAnime",)
         );
     }
 
@@ -121,5 +111,3 @@ class AnimeController extends Controller
         }
     }
 }
-
-
