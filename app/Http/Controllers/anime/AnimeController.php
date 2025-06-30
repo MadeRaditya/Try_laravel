@@ -13,9 +13,10 @@ class AnimeController extends Controller
     {
         $randomPage = rand(1, 20);
 
-        [$topAnimeResponse, $recommendedResponse] = Http::pool(fn($pool) => [
+        [$topAnimeResponse, $recommendedResponse, $newAnime] = Http::pool(fn($pool) => [
             $pool->get(env("JIKAN_API") . "/top/anime?limit=8"),
             $pool->get(env("JIKAN_API") . "/recommendations/anime?page={$randomPage}"),
+            $pool->get(env("JIKAN_API") . "/top/anime?filter=airing&limit=8"),
         ]);
 
         $topAnime = $topAnimeResponse->successful() ? $topAnimeResponse->json()['data'] : [];
@@ -23,22 +24,23 @@ class AnimeController extends Controller
         $recommendedAnime = [];
 
         if ($recommendedResponse->successful()) {
-            $rawRecommended = $recommendedResponse->json()['data']??[];
-            
-            $allEntries = collect($rawRecommended)
-            ->flatMap(fn($item) => $item['entry'])
-            ->unique('mal_id')
-            ->values();
+            $rawRecommended = $recommendedResponse->json()['data'] ?? [];
 
-            $recommendedAnime = $allEntries->count()<= 8
-            ? $allEntries->all()
-            : $allEntries->slice(rand(0, $allEntries->count() - 8), 8)->all();
+            $allEntries = collect($rawRecommended)
+                ->flatMap(fn($item) => $item['entry'])
+                ->unique('mal_id')
+                ->values();
+
+            $recommendedAnime = $allEntries->count() <= 8
+                ? $allEntries->all()
+                : $allEntries->slice(rand(0, $allEntries->count() - 8), 8)->all();
         }
 
+        $newAnime = $newAnime->successful() ? $newAnime->json()['data'] : [];
 
         return view(
             "anime.index",
-            compact("topAnime", "recommendedAnime",)
+            compact("topAnime", "recommendedAnime", "newAnime")
         );
     }
 
@@ -75,6 +77,30 @@ class AnimeController extends Controller
             return view("anime.topAnime", compact("topAnime", "pagination", "page"));
         } else {
             return view("anime.topAnime", [
+                "error" => "Error fetching top anime data",
+            ]);
+        }
+    }
+
+    public function newAnime(Request $request)
+    {
+        $page = $request->query("page", 1);
+
+        $response = Http::get(env("JIKAN_API") . "/top/anime", [
+            'filter'        => 'airing',
+            'sfw'           => 'true',
+            'page'          => $page,
+        ]);
+
+
+
+        if ($response->successful()) {
+            $result = $response->json();
+            $newAnime = $result['data'];
+            $pagination = $result['pagination'];
+            return view("anime.newAnime", compact("newAnime", "pagination", "page"));
+        } else {
+            return view("anime.newAnime", [
                 "error" => "Error fetching top anime data",
             ]);
         }

@@ -26,7 +26,9 @@ Route::get("/anime", [AnimeController::class, "index"])->name("anime.index");
 Route::get("/anime/TopAnime", [AnimeController::class, "topAnime"])->name(
     "anime.topAnime"
 );
-
+Route::get("/anime/NewAnime", [AnimeController::class, "newAnime"])->name(
+    "anime.newAnime"
+);
 Route::get("/anime/search", [AnimeController::class, "search"])->name(
     "anime.searchAnime"
 );
