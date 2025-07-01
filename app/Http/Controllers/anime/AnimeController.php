@@ -16,7 +16,7 @@ class AnimeController extends Controller
         [$topAnimeResponse, $recommendedResponse, $newAnime] = Http::pool(fn($pool) => [
             $pool->get(env("JIKAN_API") . "/top/anime?limit=8"),
             $pool->get(env("JIKAN_API") . "/recommendations/anime?page={$randomPage}"),
-            $pool->get(env("JIKAN_API") . "/top/anime?filter=airing&limit=8"),
+            $pool->get(env("JIKAN_API") . "/seasons/now"),
         ]);
 
         $topAnime = $topAnimeResponse->successful() ? $topAnimeResponse->json()['data'] : [];
@@ -36,7 +36,17 @@ class AnimeController extends Controller
                 : $allEntries->slice(rand(0, $allEntries->count() - 8), 8)->all();
         }
 
-        $newAnime = $newAnime->successful() ? $newAnime->json()['data'] : [];
+        $rawnewAnime = $newAnime->successful() ? $newAnime->json()['data'] : [];
+        $uniqueNewAnime = [];
+        if (count($rawnewAnime) > 0) {
+            foreach($rawnewAnime as $anime) {
+                if (isset($anime['mal_id'])) {
+                    $uniqueNewAnime[$anime['mal_id']] = $anime;
+                }
+            }
+        }
+
+        $newAnime = array_values(array_slice($uniqueNewAnime, 0, 8));
 
         return view(
             "anime.index",
@@ -86,8 +96,7 @@ class AnimeController extends Controller
     {
         $page = $request->query("page", 1);
 
-        $response = Http::get(env("JIKAN_API") . "/top/anime", [
-            'filter'        => 'airing',
+        $response = Http::get(env("JIKAN_API") . "/seasons/now", [
             'sfw'           => 'true',
             'page'          => $page,
         ]);
@@ -96,7 +105,15 @@ class AnimeController extends Controller
 
         if ($response->successful()) {
             $result = $response->json();
-            $newAnime = $result['data'];
+            $uniqueNewAnime = [];
+            if(count($result['data']) > 0) {
+                foreach($result['data'] as $anime) {
+                    if (isset($anime['mal_id'])) {
+                        $uniqueNewAnime[$anime['mal_id']] = $anime;
+                    }
+                }
+            }
+            $newAnime = array_values($uniqueNewAnime);
             $pagination = $result['pagination'];
             return view("anime.newAnime", compact("newAnime", "pagination", "page"));
         } else {
