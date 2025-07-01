@@ -1,4 +1,4 @@
-@extends('layout')z
+@extends('layout')
 
 @section('title', 'Test Page')
 

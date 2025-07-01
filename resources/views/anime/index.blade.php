@@ -45,8 +45,10 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-yellow-700 dark:text-yellow-200">No recommended anime available at the moment.</p>
+                    <div class="mt-3">
+                        <p class="text-sm text-yellow-700 dark:text-yellow-200">No recommended anime available at the moment. <br/>
+                            please Refresh Page
+                        </p>
                     </div>
                 </div>
             </div>
@@ -78,8 +80,9 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-yellow-700 dark:text-yellow-200">No Top anime available at the moment.</p>
+                    <div class="mt-3">
+                        <p class="text-sm text-yellow-700 dark:text-yellow-200">No Top anime available at the moment. <br/>
+                            please Refresh Page</p>
                     </div>
                 </div>
             </div>
@@ -111,8 +114,9 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-yellow-700 dark:text-yellow-200">No New anime available at the moment.</p>
+                    <div class="mt-3">
+                        <p class="text-sm text-yellow-700 dark:text-yellow-200">No New anime available at the moment. <br/>
+                            please Refresh Page</p>
                     </div>
                 </div>
             </div>
