@@ -4,6 +4,7 @@
 @section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white transition-colors duration-200 text-center mb-4">in Progres......</h1>
             <!-- Profile Section -->
             <div class="text-center mb-12">
                 <div class="relative inline-block">
