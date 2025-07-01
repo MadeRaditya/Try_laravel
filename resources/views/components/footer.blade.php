@@ -1,4 +1,4 @@
-<footer class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700">
+<footer class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 bottom-0 mt-auto">
     <div class="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
         <div class="flex justify-center space-x-6 md:order-2">
             <a href="#" class="text-gray-400 hover:text-gray-500">
