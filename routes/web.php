@@ -3,11 +3,26 @@
 use App\Http\Controllers\anime\AnimeController;
 use App\Http\Controllers\profil\ProfilController;
 use App\Http\Controllers\todo\TodoController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/", function () {
     return view("welcome");
 });
+
+Route::get("/login", [AuthController::class, "showLogin"])->name("login");
+Route::post("/login", [AuthController::class, "login"]);
+
+Route::get("/register", [AuthController::class, "showRegister"])->name(
+    "register"
+);
+Route::post("/register", [AuthController::class, "register"]);
+
+Route::post("/logout", [AuthController::class, "logout"])->name("logout");
+
+Route::get("/dashboard", function () {
+    return view("dashboard");
+})->middleware("auth");
 
 Route::get("/test", function () {
     return view("test");
@@ -35,4 +50,3 @@ Route::get("/anime/search", [AnimeController::class, "search"])->name(
 Route::get("/anime/detail/{id}", [AnimeController::class, "show"])->name(
     "anime.detail"
 );
-
