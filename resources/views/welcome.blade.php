@@ -67,7 +67,7 @@
                         <p class="flex-auto">Explore our vast collection of anime series and movies.</p>
                         <p class="mt-6">
                             <a href="/anime" class="text-sm font-semibold leading-6 text-red-600">Learn more <span
-                                    aria-hidden="true">→</span></a>
+                            aria-hidden="true">→</span></a>
                         </p>
                     </dd>
                 </div>
@@ -86,7 +86,7 @@
                     <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600 dark:text-gray-300">
                         <p class="flex-auto">Discover more about our </p>
                         <p class="mt-6">
-                            <a href="{{ route('profil') }}" class="text-sm font-semibold leading-6 text-red-600">Learn
+                            <a href="{{ route('profile.index') }}" class="text-sm font-semibold leading-6 text-red-600">Learn
                                 more <span aria-hidden="true">→</span></a>
                         </p>
                     </dd>

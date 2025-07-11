@@ -20,15 +20,24 @@ Route::post("/register", [AuthController::class, "register"]);
 
 Route::post("/logout", [AuthController::class, "logout"])->name("logout");
 
+Route::middleware("auth")->prefix("profile")->name("profile.")->group(function () {
+    Route::get("/", [ProfilController::class, "index"])->name("index");
+    Route::get("/edit", [ProfilController::class, "edit"])->name(
+        "edit"
+    );
+    Route::post("/", [ProfilController::class, "update"])->name(
+        "update"
+    );
+});
+
 Route::get("/dashboard", function () {
     return view("dashboard");
-})->middleware("auth");
+})->middleware("auth")->name("dashboard");
 
 Route::get("/test", function () {
     return view("test");
 });
 
-Route::get("/profil", [ProfilController::class, "index"])->name("profil");
 Route::get("/todo", [TodoController::class, "index"])->name("todo");
 Route::post("/todo", [TodoController::class, "store"])->name("todo.post");
 Route::put("/todo/{id}", [TodoController::class, "update"])->name(
