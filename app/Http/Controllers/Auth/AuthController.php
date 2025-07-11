@@ -12,6 +12,11 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
+        //jika tidak ingin halaman diakses secara total oleh user jika user sudah login
+        // if (Auth::check()) {
+        //     return view('auth.already_logged_in', ['user' => Auth::user()]);
+        // }
+
         return view("auth.login");
     }
 

@@ -2,7 +2,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <div class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8 min-h-screen">
         <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
             <h1 class="text-3xl font-semibold text-gray-900 dark:text-white mb-4">
                 Welcome, {{ auth()->user()->name }}

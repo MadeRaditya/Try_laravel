@@ -28,9 +28,15 @@
                 @if(auth()->check())
                 <div class="relative group">
                     <a href="{{ route('profile.index') }}" class="block">
+                        @if(auth()->user()->profile_picture)
                         <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}"
                             class="w-7 h-7 rounded-full object-cover ring-2 ring-offset-2 ring-transparent group-hover:ring-blue-500 dark:group-hover:ring-blue-400 transition duration-300 shadow-sm"
                             alt="Profile Picture">
+                        @else
+                        <div class="w-7 h-7 flex items-center justify-center rounded-full bg-gray-300 text-xs text-white font-semibold dark:bg-gray-700">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </div>
+                        @endif
                     </a>
                     <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-300 z-50">
                         <a href="{{ route('dashboard') }}" class="block font-medium px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>
@@ -61,9 +67,15 @@
                 @if(auth()->check())
                 <div class="relative group">
                     <a href="{{ route('profile.index') }}" class="block">
+                        @if(auth()->user()->profile_picture)
                         <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}"
                             class="w-5 h-5 rounded-full object-cover ring-2 ring-offset-2 ring-transparent group-hover:ring-blue-500 dark:group-hover:ring-blue-400 transition duration-300 shadow-sm"
                             alt="Profile Picture">
+                        @else
+                        <div class="w-5 h-5 flex items-center justify-center rounded-full bg-gray-300 text-xs text-white font-semibold dark:bg-gray-700">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </div>
+                        @endif
                     </a>
                     <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-300 z-50">
                         <a href="{{ route('dashboard') }}" class="block font-medium px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>

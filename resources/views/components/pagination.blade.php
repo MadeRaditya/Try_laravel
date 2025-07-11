@@ -18,7 +18,7 @@
 <nav class="pagination my-6">
     <ul class="flex flex-wrap items-center justify-center space-x-1">
         {{-- First --}}
-        @if ($current > 1)
+        @if ($current > 3)
             <li>
                 <a href="{{ route($route, array_merge($query, ['page' => 1]))  }}"
                    class="px-3 py-1.5 text-sm font-medium border rounded-md 

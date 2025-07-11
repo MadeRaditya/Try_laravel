@@ -4,6 +4,25 @@
 @section('content')
 <div class="flex justify-center items-center py-20 px-4 min-h-screen">
     <div class="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8">
+        @auth
+            <p class="text-center text-red-600 dark:text-red-400 text-lg">
+                You already logged in as <span class="font-semibold">{{ auth()->user()->name }}</span>, please logout first.<br>
+                Redirecting to dashboard in <span id="countdown">3</span> seconds...
+            </p>
+
+            <script>
+                let seconds = 3;
+                const countdownEl = document.getElementById('countdown');
+                const interval = setInterval(() => {
+                    seconds--;
+                    countdownEl.textContent = seconds;
+                    if (seconds <= 0) {
+                        clearInterval(interval);
+                        window.location.href = "{{ route('dashboard') }}";
+                    }
+                }, 1000);
+            </script>
+        @else
         <div class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
                 Welcome Back
@@ -38,6 +57,9 @@
                 <a href="{{route('register')}}" class="text-sm text-gray-700 dark:text-gray-300">Not have Account?
                 <span class="font-bold text-blue-600 hover:text-blue-700 hover:underline">Register</span>
                 </a>
+                <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:text-blue-700 hover:underline">
+                    Forgot Password?
+                </a>
             </div>
 
             <button type="submit"
@@ -45,6 +67,7 @@
                 Login
             </button>
         </form>
+        @endauth
     </div>
 </div>
 @endsection
