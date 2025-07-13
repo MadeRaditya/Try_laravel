@@ -4,6 +4,7 @@ namespace App\Http\Controllers\anime;
 
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -70,7 +71,16 @@ class AnimeController extends Controller
             $existingCollection = Collection::where("user_email", Auth::user()->email)
                                             ->where("anime_mal_id", $data["mal_id"])
                                             ->exists();
-            return view("anime.detailAnime", compact("data", "existingCollection"));
+
+            $anime_mal_id = $data["mal_id"];
+            $comments = Comment::where('anime_mal_id', $anime_mal_id)
+                            ->whereNull('parent_id')
+                            ->with('replies')
+                            ->latest()
+                            ->get();
+        
+
+            return view("anime.detailAnime", compact("data", "existingCollection","comments"));
         } else {
             return view("anime.detailAnime", [
                 "error" => "Error featching anime Detail",

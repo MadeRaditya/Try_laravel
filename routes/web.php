@@ -6,6 +6,7 @@ use App\Http\Controllers\todo\TodoController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -83,3 +84,10 @@ Route::get("/anime/detail/{id}", [AnimeController::class, "show"])->name(
 );
 
 // end route anime
+
+
+// route comment
+
+Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+
+// end route comment

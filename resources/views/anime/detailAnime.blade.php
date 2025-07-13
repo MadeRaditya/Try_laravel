@@ -80,8 +80,7 @@
 
                         @if(session('success'))
                         <div class="my-4">
-                            <div class=" text-green-700 dark:text-green-200 px-4 py-3"
-                                role="alert">
+                            <div class=" text-green-700 dark:text-green-200 px-4 py-3" role="alert">
                                 {{ session('success') }}
                             </div>
                         </div>
@@ -89,8 +88,7 @@
 
                         @if(session('error'))
                         <div class="my-4">
-                            <div class=" text-red-700 dark:text-red-200 px-4 py-3 rounded "
-                                role="alert">
+                            <div class=" text-red-700 dark:text-red-200 px-4 py-3 rounded " role="alert">
                                 {{ session('error') }}
                             </div>
                         </div>
@@ -217,7 +215,26 @@
             </div>
         </div>
     </div>
+    {{-- comment --}}
+    <div class="bg-white dark:bg-gray-800 max-w-7xl mx-auto p-5 my-5">
+        <x-comment-input :anime_mal_id="$data['mal_id']" :user_email="Auth::user()->email"
+            :username="Auth::user()->name" :anime_title="$data['title']" :parent_id="null" />
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-2">
+            <h1 class="text-2xl text-center font-bold text-gray-900 dark:text-white sm:text-lg">
+                Comment
+            </h1>
+            <div class="max-w-4xl mx-auto mt-5">
+                @foreach ($comments as $comment)
+                <x-comment-item :comment="$comment" :anime_mal_id="$data['mal_id']" />
+                @endforeach
+            </div>
+
+        </div>
+    </div>
+
 </div>
+
 @endif
 
 @endsection

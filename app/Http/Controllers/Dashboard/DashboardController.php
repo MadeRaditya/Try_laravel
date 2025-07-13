@@ -27,9 +27,13 @@ class DashboardController extends Controller
             'user_email' => 'required|email'
         ]);
 
-        Collection::create($validated);
-
-        return back()->with('success', 'Collection added successfully');
+        if($validated){
+            Collection::create($validated);
+    
+            return back()->with('success', 'Collection added successfully');
+        }else{
+            return back()->with('error', 'Failed to add collection');
+        }
     }
 
     
