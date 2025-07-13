@@ -38,4 +38,9 @@ class User extends Authenticatable
             "password" => "hashed",
         ];
     }
+
+    public function collectios()
+    {
+        return $this->hasMany(Collection::class, 'user_email', 'email');
+    }
 }

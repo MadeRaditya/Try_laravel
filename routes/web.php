@@ -6,11 +6,14 @@ use App\Http\Controllers\todo\TodoController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/", function () {
     return view("welcome");
 });
+
+// route auth
 
 Route::get("/login", [AuthController::class, "showLogin"])->name("login");
 Route::post("/login", [AuthController::class, "login"]);
@@ -38,14 +41,21 @@ Route::middleware("auth")->prefix("profile")->name("profile.")->group(function (
     );
 });
 
-Route::get("/dashboard", function () {
-    return view("dashboard");
-})->middleware("auth")->name("dashboard");
+// end route auth
+
+// route dashbord
+
+Route::get("/dashboard", [DashboardController::class, "index"])->middleware("auth")->name("dashboard");
+
+Route::post('/collections/store', [DashboardController::class, 'storeCollection'])->name('collections.store');
+
+// end route dashbord
 
 Route::get("/test", function () {
     return view("test");
 });
 
+// route todo
 Route::get("/todo", [TodoController::class, "index"])->name("todo");
 Route::post("/todo", [TodoController::class, "store"])->name("todo.post");
 Route::put("/todo/{id}", [TodoController::class, "update"])->name(
@@ -54,6 +64,10 @@ Route::put("/todo/{id}", [TodoController::class, "update"])->name(
 Route::delete("/todo/{id}", [TodoController::class, "destroy"])->name(
     "todo.delete"
 );
+
+// end route todo
+
+// route anime
 Route::get("/anime", [AnimeController::class, "index"])->name("anime.index");
 Route::get("/anime/TopAnime", [AnimeController::class, "topAnime"])->name(
     "anime.topAnime"
@@ -67,3 +81,5 @@ Route::get("/anime/search", [AnimeController::class, "search"])->name(
 Route::get("/anime/detail/{id}", [AnimeController::class, "show"])->name(
     "anime.detail"
 );
+
+// end route anime
